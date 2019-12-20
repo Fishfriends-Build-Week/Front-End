@@ -1,7 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {
+  useState
+  // , useEffect
+} from 'react';
 import FormUserDetails from './FormUserDetails';
 import Confirm from './Confirm'
-import { Container } from '@material-ui/core';
+// import { Container } from '@material-ui/core';
 
 const UserForm = () => {
 
@@ -38,26 +41,26 @@ const UserForm = () => {
 
     const { step } = users;
     switch (step) {
+        default:
         case 1:
-        return(
-            <FormUserDetails
-            nextStep={nextStep}
-            handleChanges={handleChanges}
-            onSubmit={onSubmit}
-            values={users}
-            />
-        );
+            return(
+                <FormUserDetails
+                nextStep={nextStep}
+                handleChanges={handleChanges}
+                onSubmit={onSubmit}
+                values={users}
+                />
+            );
 
         case 2: 
-        return(
-            <Confirm
-            nextStep={nextStep}
-            prevStep={prevStep}
-            values={users}
-            />
-        )
+            return(
+                <Confirm
+                nextStep={nextStep}
+                prevStep={prevStep}
+                values={users}
+                />
+            );
     }
-    return <div></div>;
 };
 
 export default UserForm;

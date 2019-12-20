@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import { StylesContext } from '@material-ui/styles';
+// import { StylesContext } from '@material-ui/styles';
 
 
 const FormUserDetails = props => {
@@ -12,7 +12,11 @@ const FormUserDetails = props => {
         props.onSubmit(e);
     }
 
-    const {values, handleChanges, handleChecked} = props;
+    const {
+      values
+      , handleChanges
+      // , handleChecked
+    } = props;
 
     return (
         <Container>
