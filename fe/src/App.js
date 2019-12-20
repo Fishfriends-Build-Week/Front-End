@@ -5,6 +5,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Login from './components/Login';
 
 import './App.scss';
+import UserForm from './components/Signup/UserForm';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <div className="App">
         <Route exact path="/" component={Login} />
         {/* <PrivateRoute exact path="/tbd" component={TBD} /> */}
+        <Route exact path='/signup' component={UserForm} />
       </div>
     </Router>
   );
