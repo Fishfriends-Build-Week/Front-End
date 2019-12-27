@@ -2,7 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import { StylesContext } from '@material-ui/styles';
+
 
 
 const FormUserDetails = props => {
@@ -23,7 +23,7 @@ const FormUserDetails = props => {
                 variant='outlined'
                 margin='normal'
                 required
-                halfWidth
+                fullWidth
                 name='email'
                 label='Email'
             />
@@ -34,7 +34,7 @@ const FormUserDetails = props => {
                 variant='outlined'
                 margin='normal'
                 required
-                halfWidth
+                fullWidth
                 name='userName'
                 label='User Name'
             />
@@ -45,7 +45,7 @@ const FormUserDetails = props => {
                 variant='outlined'
                 margin='normal'
                 required
-                halfWidth
+                fullWidth
                 name='password'
                 label='password'
                 type='password'
