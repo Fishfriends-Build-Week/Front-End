@@ -6,8 +6,10 @@ export const axiosWithAuth = () => {
 
   return Axios.create(
     {
+      baseURL: 'https://fish-friends-build-week.herokuapp.com/',
       headers: {
-        Authorization: token
+        'Content-Type': 'application/json',
+        Authorization: `${token}`
       }
     }
   );
