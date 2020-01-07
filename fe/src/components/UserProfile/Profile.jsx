@@ -17,7 +17,7 @@ const Profile = () => {
             console.log(res.data);
         });
         
-    })
+    },[])
 
     return(
         <h1>Weclome User!</h1>
