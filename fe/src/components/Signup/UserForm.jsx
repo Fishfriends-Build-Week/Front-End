@@ -12,33 +12,34 @@ const UserForm = () => {
 
     const [users, setUsers] = useState({
         step: 1,
-        email: '',
-        emailError: '',
         userName: '',
-        userNameError: '',
-        password: ''
+        password: '',
+        cPassword: '',
+        cPasswordError: ''
     });
+
     
-    useEffect(() => {
-        axios
-        .get('https://fish-friends-build-week.herokuapp.com/')
-        .then(res => {
-            console.log(res.data)
-            setUsers(res.data)
-        })
-    })
+    // useEffect(() => {
+    //     axios
+    //     .get('https://fish-friends-build-week.herokuapp.com/')
+    //     .then(res => {
+    //         console.log(res.data)
+    //         setUsers(res.data)
+    //     })
+    // })
 
     
 
     const validate = () => {
         let isError = false;
-        const errors = {
-          userNameError: ""
+        let errors = {
+          cPasswordError: ''
         };
     
-        if (users.userName.length < 5) {
-          isError = true;
-          errors.userNameError = "Username need to be at least 5 characters long";
+
+        if(users.cPassword !== users.password) {
+            isError = true;
+            errors.cPasswordError = 'Please make sure passwords match'
         }
     
         if (isError) {
@@ -62,13 +63,10 @@ const UserForm = () => {
           
     
           setUsers({
-            userName: "",
-            userNameError: "",
-            password: "",
-          });
-          handleChanges({
-            userName: "",
-            password: ""
+            userName: '',
+            password: '',
+            cPassword: '',
+            cPasswordError: ''
           });
         } 
       };
@@ -86,6 +84,7 @@ const UserForm = () => {
 
     const handleChanges = input => e => {
         setUsers({ ...users, [input]: e.target.value });
+        console.log('Changes to user state', users)
     };
 
     const { step } = users;
@@ -96,7 +95,6 @@ const UserForm = () => {
                 <FormUserDetails
                 nextStep={nextStep}
                 handleChanges={handleChanges}
-                onSubmit={onSubmit}
                 values={users}
                 />
             );
@@ -106,6 +104,7 @@ const UserForm = () => {
                 <Confirm
                 nextStep={nextStep}
                 prevStep={prevStep}
+                onSubmit={onSubmit}
                 values={users}
                 />
             );

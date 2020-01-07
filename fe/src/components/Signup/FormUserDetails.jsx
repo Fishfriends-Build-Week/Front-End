@@ -33,10 +33,10 @@ const useStyles = makeStyles({
 })
 
 const FormUserDetails = props => {
+    console.log(props, 'this is props formuserd')
     const next = e => {
         e.preventDefault();
         props.nextStep();
-        props.onSubmit(e);
     }
 
     const classes = useStyles();
@@ -44,26 +44,17 @@ const FormUserDetails = props => {
     const {
       values
       , handleChanges
-      // , handleChecked
     } = props;
 
     return (
         <div className={classes.wrapper}>
         <Container className={classes.form}>
-            <TextField className={classes.text}
-                helperText={values.email}
-                onChange={handleChanges('email')}
-                defaultValue={values.email}
-                margin='normal'
-                required
-                fullWidth
-                name='email'
-                label='Email'
-            />
+
             <TextField className={classes.text}
                 helperText={values.userNameError}
                 onChange={handleChanges('userName')}
                 defaultValue={values.userName}
+                variant='outlined'
                 margin='normal'
                 required
                 fullWidth
@@ -72,8 +63,9 @@ const FormUserDetails = props => {
             />
             <br/>
             <TextField className={classes.text}
-                onChange={handleChanges('password')}
+                onChange={handleChanges('cPassword')}
                 defaultValue={values.password}
+                variant='outlined'
                 margin='normal'
                 required
                 fullWidth
@@ -83,18 +75,30 @@ const FormUserDetails = props => {
                 id='password'
                 autoComplete='current-password' 
                 />
-                <Button
-                    type='submit'
-                    onSubmit={props.onSubmit}
-                    margin='normal'
-                    variant='contained'
-                    label='Continue'
-                    style={styles.button}
-                    onClick={next}
-                >Continue
-                </Button>
-                </Container>
-                </div>
+            <TextField className={classes.text}
+                onChange={handleChanges('password')}
+                defaultValue={values.cPassword}
+                variant='outlined'
+                margin='normal'
+                required
+                fullWidth
+                name='cPassword'
+                label='Confirm Password'
+                type='password'
+                id='cPassword'
+                autoComplete='current-password' 
+                />
+            <Button
+                type='submit'
+                onSubmit={props.onSubmit}
+                margin='normal'
+                variant='contained'
+                label='Continue'
+                style={styles.button}
+                onClick={next}
+                >Continue</Button>
+        </Container>
+        </div>
     )
 }
 

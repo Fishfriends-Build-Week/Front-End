@@ -18,6 +18,10 @@ const Profile = () => {
         });
         
     })
+
+    return(
+        <h1>Weclome User!</h1>
+    )
     
 }
 
