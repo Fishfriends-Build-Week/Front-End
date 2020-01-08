@@ -44,11 +44,12 @@ const FormikLoginForm = withFormik({
             setErrors({ email: "Seaman! Pick another email" });
         } else {
             axios
-                .post("ENTER OUR DATABASE URL HERE", values)
+                .post("https://fish-friends-build-week.herokuapp.com/accounts/login", values)
                 .then(res => {
                     console.log(res); // Data was created successfully
                     resetForm();
                     setSubmitting(false);
+                    props.history.push('/')
                 })
                 .catch(err => {
                     console.log(err);  // There was an error
