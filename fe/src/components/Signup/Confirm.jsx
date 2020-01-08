@@ -43,7 +43,7 @@ const Confirm = props => {
                 {values.email}
             </Typography>
             <Typography className={classes.text} variant='h5' component='h2'>
-                {values.userName}    
+                {values.username}    
             </Typography>
             <Typography className={classes.text} variant='h5' component='h2'>
                 {values.password}    
