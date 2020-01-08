@@ -4,10 +4,6 @@ import Confirm from './Confirm'
 import { Redirect } from 'react-router-dom';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
-
-
-
-
 const UserForm = props => {
   
     const [steps, setSteps] = useState({
@@ -22,14 +18,12 @@ const UserForm = props => {
 
     console.log('users from user form', users)
     
-
     const validate = () => {
         let isError = false;
         let errors = {
           passwordError: ''
         };
     
-
         if(users.password.length >= 6) {
             isError = true;
             errors.passwordError = 'Password must be at least 6 characters long';
@@ -61,7 +55,6 @@ const UserForm = props => {
         const err = validate();
     
         if (!err) {
-          
     
           setUsers({
             username: '',
@@ -69,7 +62,6 @@ const UserForm = props => {
           });
         } 
       };
-    
     
     const nextStep = () => {
         const { step } = steps;
