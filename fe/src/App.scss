@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+
+  .link {
+    // color: #61dafb;
+  }
+  
+  header {
+    // background-color: #282c34;
+    // color: white;
+
+    width: 80%;
+    min-height: 10vh;
+    margin: 10px auto;
+
+    nav {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+    }
+    
+    .App-logo {
+      height: 10vmin;
+      pointer-events: none;
+    }
+  }
+}
