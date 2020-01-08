@@ -37,6 +37,7 @@ const FormUserDetails = props => {
     const next = e => {
         e.preventDefault();
         props.nextStep();
+        props.onSubmit(e);
     }
 
     const classes = useStyles();
@@ -51,19 +52,19 @@ const FormUserDetails = props => {
         <Container className={classes.form}>
 
             <TextField className={classes.text}
-                helperText={values.userNameError}
-                onChange={handleChanges('userName')}
-                defaultValue={values.userName}
+                helperText={values.usernameError}
+                onChange={handleChanges('username')}
+                defaultValue={values.username}
                 variant='outlined'
                 margin='normal'
                 required
                 fullWidth
-                name='userName'
+                name='username'
                 label='User Name'
             />
             <br/>
             <TextField className={classes.text}
-                onChange={handleChanges('cPassword')}
+                onChange={handleChanges('password')}
                 defaultValue={values.password}
                 variant='outlined'
                 margin='normal'
@@ -75,8 +76,8 @@ const FormUserDetails = props => {
                 id='password'
                 autoComplete='current-password' 
                 />
-            <TextField className={classes.text}
-                onChange={handleChanges('password')}
+            {/* <TextField className={classes.text}
+                onChange={handleChanges('cPassword')}
                 defaultValue={values.cPassword}
                 variant='outlined'
                 margin='normal'
@@ -87,7 +88,7 @@ const FormUserDetails = props => {
                 type='password'
                 id='cPassword'
                 autoComplete='current-password' 
-                />
+                /> */}
             <Button
                 type='submit'
                 onSubmit={props.onSubmit}

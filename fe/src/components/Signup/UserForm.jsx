@@ -1,46 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import FormUserDetails from './FormUserDetails';
 import Confirm from './Confirm'
 import { Redirect } from 'react-router-dom';
-import axios from 'axios';
+import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 
 
 
-const UserForm = () => {
-    
-
-    const [users, setUsers] = useState({
-        step: 1,
-        userName: '',
-        password: '',
-        cPassword: '',
-        cPasswordError: ''
+const UserForm = props => {
+  
+    const [steps, setSteps] = useState({
+      step: 1
     });
 
-    
-    // useEffect(() => {
-    //     axios
-    //     .get('https://fish-friends-build-week.herokuapp.com/')
-    //     .then(res => {
-    //         console.log(res.data)
-    //         setUsers(res.data)
-    //     })
-    // })
+    const [users, setUsers] = useState({
+        username: '',
+        password: '',
+        
+    });
 
+    console.log('users from user form', users)
     
 
     const validate = () => {
         let isError = false;
         let errors = {
-          cPasswordError: ''
+          // cPasswordError: ''
         };
     
 
-        if(users.cPassword !== users.password) {
-            isError = true;
-            errors.cPasswordError = 'Please make sure passwords match'
-        }
+        // if(users.cPassword !== users.password) {
+        //     isError = true;
+        //     errors.cPasswordError = 'Please make sure passwords match'
+        // }
     
         if (isError) {
           setUsers({
@@ -53,33 +45,41 @@ const UserForm = () => {
       };
     
       const onSubmit = e => {
+        console.log('users from submit', users)
         e.preventDefault();
-        console.log("register form data:", users);
-        
-    
+        axiosWithAuth()
+        .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
+        .then(res => {
+          // props.setIsLoggedIn(true);
+          props.history.push('/login');
+        })
+        .catch(err => {
+          console.log('The big one that got away', err);
+        });
+
         const err = validate();
     
         if (!err) {
           
     
           setUsers({
-            userName: '',
+            username: '',
             password: '',
-            cPassword: '',
-            cPasswordError: ''
+            // cPassword: '',
+            // cPasswordError: ''
           });
         } 
       };
     
     
     const nextStep = () => {
-        const { step } = users;
-        setUsers({ ...users, step: step + 1});
+        const { step } = steps;
+        setSteps({ ...steps, step: step + 1});
     };
 
     const prevStep = () => {
-        const { step } = users;
-        setUsers({ ...users, step: step - 1});
+        const { step } = steps;
+        setSteps({ ...steps, step: step - 1});
     };
 
     const handleChanges = input => e => {
@@ -87,8 +87,8 @@ const UserForm = () => {
         console.log('Changes to user state', users)
     };
 
-    const { step } = users;
-    switch (step) {
+    // const { step } = users;
+    switch (steps) {
         default:
         case 1:
             return(
@@ -96,6 +96,7 @@ const UserForm = () => {
                 nextStep={nextStep}
                 handleChanges={handleChanges}
                 values={users}
+                onSubmit={onSubmit}
                 />
             );
 
@@ -104,12 +105,12 @@ const UserForm = () => {
                 <Confirm
                 nextStep={nextStep}
                 prevStep={prevStep}
-                onSubmit={onSubmit}
+                
                 values={users}
                 />
             );
         case 3: 
-            return <Redirect to='/Profile' />
+            return <Redirect to='/profile' />
     }
 };
 
