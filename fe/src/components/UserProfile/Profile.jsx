@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch} from 'react-redux';
-import { useParams } from 'react-router-dom';
 import {axiosWithAuth } from '../../utils/axiosWithAuth';
 
 const Profile = () => {
-    const dispatch = useDispatch();
 
     const [user, setUser] = useState({
-
+        userName: ''
     });
 
     useEffect(() => {
         axiosWithAuth()
-        .get('https://fish-friends-build-week.herokuapp.com/')
+        .get(`https://fish-friends-build-week.herokuapp.com/accounts`)
         .then(res => {
-            console.log(res.data);
-        });
+            console.log(res);
+            setUser(res.data);
+        })
+        .catch(err => console.log('use: ', err));
         
-    },[])
+    },[]);
 
     return(
-        <h1>Weclome User!</h1>
+    <h1>Weclome {user.userName}</h1>
     )
     
 }
