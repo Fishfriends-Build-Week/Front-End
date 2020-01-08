@@ -3,7 +3,13 @@ import {
   LOGOUT,
   LOGIN_FAIL,
   LOGIN_START,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  REGISTER_START,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  FETCH_USER_START,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAIL
 } from "../actions";
 
 export const initialState = {
@@ -26,6 +32,32 @@ export const reducer = (state = initialState, action) => {
           // account_id: action.payload.account_id,
           username: action.payload.username }
       };
+    case FETCH_USER_START:
+      return { ...state, isFetchingUser: true, fetchUserError: "" };
+    case FETCH_USER_FAIL:
+      return {
+        ...state,
+        isFetchingUser: false,
+        fetchUserError: action.payload
+      };
+    case FETCH_USER_SUCCESS:
+      return {
+        ...state,
+        isFetchingUser: false,
+        user: {
+          ...action.payload
+        }
+      };
+
+    case REGISTER_START:
+      return { ...state, isRegistering: true, registerError: ""};
+    case REGISTER_SUCCESS:
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("username", action.payload.username);
+      return { ...state, isRegistering: false, loggedIn: true };
+    case REGISTER_FAIL:
+      return { ...state, isRegistering: false, registerError: action.payload };
+
     case LOGOUT:
       localStorage.removeItem("token");
       localStorage.removeItem("username");

@@ -4,9 +4,6 @@ import Confirm from './Confirm'
 import { Redirect } from 'react-router-dom';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
-
-
-
 const UserForm = props => {
   
     const [steps, setSteps] = useState({
@@ -21,18 +18,16 @@ const UserForm = props => {
 
     console.log('users from user form', users)
     
-
     const validate = () => {
         let isError = false;
         let errors = {
-          // cPasswordError: ''
+          passwordError: ''
         };
     
-
-        // if(users.cPassword !== users.password) {
-        //     isError = true;
-        //     errors.cPasswordError = 'Please make sure passwords match'
-        // }
+        if(users.password.length >= 6) {
+            isError = true;
+            errors.passwordError = 'Password must be at least 6 characters long';
+        }
     
         if (isError) {
           setUsers({
@@ -51,7 +46,7 @@ const UserForm = props => {
         .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
         .then(res => {
           // props.setIsLoggedIn(true);
-          props.history.push('/login');
+          props.history.push('/profile');
         })
         .catch(err => {
           console.log('The big one that got away', err);
@@ -60,17 +55,13 @@ const UserForm = props => {
         const err = validate();
     
         if (!err) {
-          
     
           setUsers({
             username: '',
-            password: '',
-            // cPassword: '',
-            // cPasswordError: ''
+            password: ''
           });
         } 
       };
-    
     
     const nextStep = () => {
         const { step } = steps;
@@ -84,7 +75,7 @@ const UserForm = props => {
 
     const handleChanges = input => e => {
         setUsers({ ...users, [input]: e.target.value });
-        console.log('Changes to user state', users)
+        console.log('Changes to user state', steps, users)
     };
 
     // const { step } = users;
