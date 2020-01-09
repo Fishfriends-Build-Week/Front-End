@@ -25,7 +25,7 @@ const Navigation = (props) => {
       <NavLink to='/expedition'>Expedition</NavLink>
       <NavLink to='/echo'>Echo</NavLink>
       <NavLink to='/explore'>Explore</NavLink>
-      {props.loggedIn ? (
+      {props.loggedIn || token ? (  //TODO: token is temporary here until props.loggedIn is working
         <>
           <NavLink to='/profile'>{username}'s Profile</NavLink>
           <NavLink to='/logout'>Logout</NavLink>
