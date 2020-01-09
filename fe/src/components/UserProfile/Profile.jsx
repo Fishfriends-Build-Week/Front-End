@@ -4,7 +4,7 @@ import {axiosWithAuth } from '../../utils/axiosWithAuth';
 const Profile = () => {
 
     const [user, setUser] = useState({
-        userName: ''
+        username: ''
     });
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const Profile = () => {
     },[]);
 
     return(
-    <h1>Weclome {user.userName}</h1>
+    <h1>Weclome To Fish Firends</h1>
     )
     
 }

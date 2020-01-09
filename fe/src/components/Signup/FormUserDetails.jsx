@@ -37,7 +37,6 @@ const FormUserDetails = props => {
     console.log(props, 'this is props formuserd')
     const next = e => {
         e.preventDefault();
-        props.nextStep();
         props.onSubmit(e);
     }
 
