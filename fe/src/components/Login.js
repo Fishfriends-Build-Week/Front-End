@@ -1,15 +1,15 @@
 import React from "react";
 // import ReactDOM from "react-dom";
 import { withFormik, Form, Field } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 import axios from "axios";
 
 function LoginForm({ values, errors, touched, isSubmitting}) {
     return (
         <Form>
             <div>
-             {touched.email && errors.email && <p>{errors.email}</p>}
-             <Field  type="email" name="email" placeholder="Email" />
+             {touched.username && errors.username && <p>{errors.username}</p>}
+             <Field  type="username" name="username" placeholder="username" />
             </div>
             <div>
              {touched.password && errors.password && <p>{errors.password}</p>}
@@ -22,29 +22,29 @@ function LoginForm({ values, errors, touched, isSubmitting}) {
 };
 
 const FormikLoginForm = withFormik({
-    mapPropsToValues({ email, password }) {
+    mapPropsToValues({ username, password }) {
         return {
-            email: email || "",
+            username: username || "",
             password: password || ""
         };
     },
     //Validation
-    validationSchema: Yup.object().shape({
-        email: Yup.string()
-            .email("Email not valid")
-            .required("Email is required"),
-        password: Yup.string()
-            .min(6, "Password must be at least 6 characters")
-            .required("Password is required")
-    }),
+    // validationSchema: Yup.object().shape({
+    //     username: Yup.string()
+    //         // .email("username not valid")
+    //         .required("username is required"),
+    //     password: Yup.string()
+    //         .min(2, "Password must be at least 2 characters")
+    //         .required("Password is required")
+    // }),
 
-    handleSubmit(values, { resetForm, setErrors, setSubmitting }) {
+    handleSubmit(values, { resetForm, setFieldError, setSubmitting }) {
         console.log(values);
-        if (values.email === "ENTERTAKENEMAILHERE") {    // Form submission code here, HTTP request
-            setErrors({ email: "Seaman! Pick another email" });
+        if (values.username === "ENTERTAKENusernameHERE") {    // Form submission code here, HTTP request
+            setFieldError("username", "Seaman! Pick another username");
         } else {
             axios
-                .post("ENTER OUR DATABASE URL HERE", values)
+                .post("https://fish-friends-build-week.herokuapp.com/accounts/login", values)
                 .then(res => {
                     console.log(res); // Data was created successfully
                     resetForm();
