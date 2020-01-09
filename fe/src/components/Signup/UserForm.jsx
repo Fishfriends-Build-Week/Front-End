@@ -8,15 +8,14 @@ import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 
 
+
 const UserForm = props => {
   
-    const [steps, setSteps] = useState({
-      step: 1
-    });
-
     const [users, setUsers] = useState({
+        step: 1,
         username: '',
         password: '',
+        passwordError: ''
         
     });
 
@@ -72,22 +71,22 @@ const UserForm = props => {
     
     
     const nextStep = () => {
-        const { step } = steps;
-        setSteps({ ...steps, step: step + 1});
+        const { step } = users;
+        setUsers({ ...users, step: step + 1});
     };
 
     const prevStep = () => {
-        const { step } = steps;
-        setSteps({ ...steps, step: step - 1});
+        const { step } = users;
+        setUsers({ ...users, step: step - 1});
     };
 
     const handleChanges = input => e => {
         setUsers({ ...users, [input]: e.target.value });
-        console.log('Changes to user state', steps, users)
+        console.log('Changes to user state', users)
     };
 
-    // const { step } = users;
-    switch (steps) {
+    const { step } = users;
+    switch (step) {
         default:
         case 1:
             return(
