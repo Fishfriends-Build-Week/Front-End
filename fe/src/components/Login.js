@@ -47,6 +47,9 @@ const FormikLoginForm = withFormik({
                 .post("https://fish-friends-build-week.herokuapp.com/accounts/login", values)
                 .then(res => {
                     console.log(res); // Data was created successfully
+                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("message", res.data.message);
+                    localStorage.setItem("username", res.data.username);
                     resetForm();
                     setSubmitting(false);
                 })
@@ -55,7 +58,6 @@ const FormikLoginForm = withFormik({
                     setSubmitting(false);
                 });
         }
-       
     }     
 }) (LoginForm);
 
