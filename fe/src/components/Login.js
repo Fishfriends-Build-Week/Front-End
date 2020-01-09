@@ -9,7 +9,7 @@ function LoginForm({ values, errors, touched, isSubmitting}) {
         <Form>
             <div>
              {touched.username && errors.username && <p>{errors.username}</p>}
-             <Field  type="username" name="username" placeholder="username" />
+             <Field  type="username" name="username" placeholder="Username" />
             </div>
             <div>
              {touched.password && errors.password && <p>{errors.password}</p>}
@@ -25,7 +25,7 @@ const FormikLoginForm = withFormik({
     mapPropsToValues({ username, password }) {
         return {
             username: username || "",
-            password: password || ""
+            password: password || "",
         };
     },
     //Validation
@@ -48,8 +48,11 @@ const FormikLoginForm = withFormik({
                 .then(res => {
                     console.log(res); // Data was created successfully
                     localStorage.setItem("token", res.data.token);
-                    localStorage.setItem("message", res.data.message);
-                    localStorage.setItem("username", res.data.username);
+                    // Extract Username from message and force the first leter to Upper Case
+                    let u = res.data.message.split(' ').slice(1).join(' ');
+                    u = u.slice(0,1).toUpperCase() + u.slice(1);
+                    localStorage.setItem("username", u);
+
                     resetForm();
                     setSubmitting(false);
                 })

@@ -13,6 +13,8 @@ import {
 } from "../actions";
 
 export const initialState = {
+  isLoading: true,
+  error: "",
   isLoggingIn: false,
   loggedIn: false,
   loginError: "",
