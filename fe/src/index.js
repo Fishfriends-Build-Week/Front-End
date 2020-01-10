@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { CookiesProvider } from 'react-cookie';
+// import { CookiesProvider } from 'react-cookie';
 // import * as serviceWorker from './serviceWorker';
 
 import { reducer } from './components/reducers';
@@ -17,9 +17,9 @@ const rootElement = document.getElementById("root");
 
 ReactDOM.render(
   <Provider store={store}>
-    <CookiesProvider>
+    {/* <CookiesProvider> */}
       <App />
-    </CookiesProvider>
+    {/* </CookiesProvider> */}
   </Provider>
   ,rootElement
 );

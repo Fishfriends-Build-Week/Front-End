@@ -3,7 +3,7 @@ import React, {
   useEffect
 } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
 
 import { connect } from 'react-redux';
 import { initialState, reducer } from './components/reducers';
@@ -34,7 +34,7 @@ import './App.scss';
 const App = (props) => {
   //#region data
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [cookies, setCookie] = useCookies(['fishfriends']);
+  // const [cookies, setCookie] = useCookies(['fishfriends']);
   //#endregion data
 
   //#region dispatch functions
