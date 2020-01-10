@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import FormUserDetails from './FormUserDetails';
 import { Redirect } from 'react-router-dom';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import { register } from '../actions/index'
+import {useSelector, useDispatch } from 'react-redux';
 
 
 
@@ -9,7 +11,8 @@ import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 
 const UserForm = props => {
-  
+    const loggedIn = useSelector(state => state.reducer.loggedIn);
+    const dispatch = useDispatch();
     const [users, setUsers] = useState({
         username: '',
         password: '',
@@ -17,6 +20,8 @@ const UserForm = props => {
     });
 
     console.log('users from user form', users)
+
+    if (loggedIn) return <Redirect to='/profile' />;
     
     const validate = () => {
         let isError = false;
@@ -24,7 +29,7 @@ const UserForm = props => {
           passwordError: ''
         };
     
-        if(users.password.length >= 6) {
+        if(!users.password.length >= 6) {
             isError = true;
             errors.passwordError = 'Password must be at least 6 characters long';
         }
@@ -42,6 +47,10 @@ const UserForm = props => {
       const onSubmit = e => {
         console.log('users from submit', users)
         e.preventDefault();
+        const credentials = {
+          username: users.username,
+          password: users.password
+        }
         axiosWithAuth()
         .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
         .then(res => {
@@ -55,6 +64,7 @@ const UserForm = props => {
         const err = validate();
     
         if (!err) {
+          dispatch(register(credentials))
     
           setUsers({
             username: '',
