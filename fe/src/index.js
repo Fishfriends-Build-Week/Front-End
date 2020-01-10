@@ -5,14 +5,17 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { CookiesProvider } from 'react-cookie';
+import { reducer } from './components/reducers/index'
 // import * as serviceWorker from './serviceWorker';
 
-import { reducer } from './components/reducers';
 
 import App from './App';
 import './index.scss';
+import { combineReducers } from 'redux';
 
-const store = createStore(reducer, applyMiddleware(thunk, logger));
+const rootReducer = combineReducers({ reducer });
+
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
