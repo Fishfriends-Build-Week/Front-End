@@ -1,28 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import {
+  createStore
+  ,applyMiddleware
+  // ,combineReducers
+} from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
-import { CookiesProvider } from 'react-cookie';
 import { reducer } from './components/reducers/index'
 // import * as serviceWorker from './serviceWorker';
 
-
 import App from './App';
 import './index.scss';
-import { combineReducers } from 'redux';
 
-const rootReducer = combineReducers({ reducer });
+// const rootReducer = combineReducers({ reducer });
+// const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
-const store = createStore(rootReducer, applyMiddleware(thunk, logger));
+const store = createStore(reducer, applyMiddleware(thunk, logger));
+
 const rootElement = document.getElementById("root");
 
 ReactDOM.render(
   <Provider store={store}>
-    {/* <CookiesProvider> */}
-      <App />
-    {/* </CookiesProvider> */}
+    <App />
   </Provider>
   ,rootElement
 );

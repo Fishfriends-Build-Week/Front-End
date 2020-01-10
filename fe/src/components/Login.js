@@ -1,31 +1,40 @@
 import React from "react";
+import { Redirect } from 'react-router-dom';
 // import ReactDOM from "react-dom";
+import { connect } from "react-redux";
 import { withFormik, Form, Field } from "formik";
 // import * as Yup from "yup";
-import axios from "axios";
 
-function LoginForm({ values, errors, touched, isSubmitting}) {
-  return (
-    <Form>
-      <div>
-        {touched.username && errors.username && <p>{errors.username}</p>}
-        <Field  type="username" name="username" placeholder="Username" />
-      </div>
-      <div>
-        {touched.password && errors.password && <p>{errors.password}</p>}
-        <Field  type="password" name="password" placeholder="Password" />
-      </div>
-      <button disabled={isSubmitting} type="submit">Submit</button>
-    </Form>
-  );
+import {
+  login
+} from "./actions";
+
+function LoginForm({ values, errors, touched, isSubmitting, loggedIn}) {
+  console.log(`LoginForm -> loggedIn`, loggedIn);
+  if (loggedIn) {
+    return <Redirect to='/profile' />;
+  } else {
+    return (
+      <Form>
+        <div>
+          {touched.username && errors.username && <p>{errors.username}</p>}
+          <Field  type="username" name="username" placeholder="Username" />
+        </div>
+        <div>
+          {touched.password && errors.password && <p>{errors.password}</p>}
+          <Field  type="password" name="password" placeholder="Password" />
+        </div>
+        <button disabled={isSubmitting} type="submit">Submit</button>
+      </Form>
+    );
+  }
 };
 
 const FormikLoginForm = withFormik({
-  mapPropsToValues({ username, password, props }) {
+  mapPropsToValues({ username, password }) {
     return {
       username: username || "",
-      password: password || "",
-      props: props
+      password: password || ""
     };
   },
 
@@ -44,30 +53,28 @@ const FormikLoginForm = withFormik({
     console.log(`LoginForm: FormikLoginForm => handleSubmit -> values`, values);
     console.log(`LoginForm: FormikLoginForm => handleSubmit -> props`, props);
 
-    if (values.username === "ENTERTAKENusernameHERE") {    // Form submission code here, HTTP request
-      setFieldError("username", "Seaman! Pick another username");
-    } else {
-      axios
-        .post("https://fish-friends-build-week.herokuapp.com/accounts/login", values)
-        .then(res => {
-          console.log(res); // Data was created successfully
-          localStorage.setItem("token", res.data.token);
-          // Extract Username from message and force the first leter to Upper Case
-          let u = res.data.message.split(' ').slice(1).join(' ');
-          u = u.slice(0,1).toUpperCase() + u.slice(1);
-          localStorage.setItem("username", u);
-
-          resetForm();
-          setSubmitting(false);
-
-          props.history.push('/profile');
-        })
-        .catch(err => {
-          console.log(err);
-          setSubmitting(false);
-        });
-    }
+    props.login(values, props);
   }
 })(LoginForm);
 
-export default FormikLoginForm;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    error: state.error,
+    isLoggingIn: state.isLoggingIn,
+    loggedIn: state.loggedIn,
+    loginError: state.loginError,
+    loginInfo: state.loginInfo
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (credentials) => dispatch(login(credentials))
+  }
+}
+
+export default connect(
+  mapStateToProps
+  ,mapDispatchToProps
+)(FormikLoginForm);

@@ -1,6 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
+// import { Redirect } from 'react-router-dom';
+
+import {
+  logout
+} from "./actions";
 
 const Logout = (props) => {
+  console.log(`Logout -> props`, props);
+
   return (
     <div>
       Logging out...
@@ -10,12 +18,33 @@ const Logout = (props) => {
 };
 
 const Derp = (props) => {
-  console.log(`TCL: Logout => Derp -> props`, props);
+  console.log(`Logout => Derp -> props`, props);
 
-  localStorage.clear();
-  props.history.push("/");
+  props.logout();
+
+  // <Redirect to="/" />
 
   return (null);
 }
 
-export default Logout;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    error: state.error,
+    isLoggingIn: state.isLoggingIn,
+    loggedIn: state.loggedIn,
+    loginError: state.loginError,
+    loginInfo: state.loginInfo
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+export default connect(
+  mapStateToProps
+  ,mapDispatchToProps
+)(Logout);
