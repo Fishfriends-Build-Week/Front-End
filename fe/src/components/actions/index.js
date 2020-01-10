@@ -16,9 +16,9 @@ export const FETCH_USER_START = "FETCH_USER_START";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USER_FAIL = "FETCH_USER_FAIL";
 
-export const FETCH_USER_ACCOUNT_START = "FETCH_USER_ACCOUNT_START";
-export const FETCH_USER_ACCOUNT_SUCCESS = "FETCH_USER_ACCOUNT_SUCCESS";
-export const FETCH_USER_ACCOUNT_FAIL = "FETCH_USER_ACCOUNT_SUCCESS";
+// export const FETCH_USER_ACCOUNT_START = "FETCH_USER_ACCOUNT_START";
+// export const FETCH_USER_ACCOUNT_SUCCESS = "FETCH_USER_ACCOUNT_SUCCESS";
+// export const FETCH_USER_ACCOUNT_FAIL = "FETCH_USER_ACCOUNT_SUCCESS";
 
 export const UPDATE_USER_START = "UPDATE_USER_START";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
@@ -80,17 +80,17 @@ export const register = credentials => dispatch => {
     });
 };
 
-export const getUserAccounts = () => dispatch => {
-    dispatch({ type: FETCH_USER_ACCOUNT_START });
-    axiosWithAuth()
-    .get(`/accounts/usename`)
-    .then(res => {
-        dispatch({ type: FETCH_USER_ACCOUNT_SUCCESS, payload: res.data });
-    })
-    .catch(err => {
-        dispatch({ type: FETCH_USER_ACCOUNT_FAIL, payload: err.message });
-    });
-};
+// export const getUserAccounts = () => dispatch => {
+//     dispatch({ type: FETCH_USER_ACCOUNT_START });
+//     axiosWithAuth()
+//     .get(`/accounts/usename`)
+//     .then(res => {
+//         dispatch({ type: FETCH_USER_ACCOUNT_SUCCESS, payload: res.data });
+//     })
+//     .catch(err => {
+//         dispatch({ type: FETCH_USER_ACCOUNT_FAIL, payload: err.message });
+//     });
+// };
 
 export const getUser = username => dispatch => {
     dispatch({ type: FETCH_USER_START });

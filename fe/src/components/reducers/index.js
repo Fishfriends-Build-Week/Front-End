@@ -33,16 +33,16 @@ export const initialState = {
 
   fetchingUserAccount: false,
   fetchUserAccountError: '',
-  userAccount: [
-    {
-      id:1,
-      username:'CountryBoi87',
-      location: 'Florida Georgia Line',
-      favBait: 'Spinner jig',
-      tagLine: 'Fish on!!!',
-      topFish: '8lbs 2oz'
-    }
-  ],
+  // userAccount: [
+  //   {
+  //     id:1,
+  //     username:'CountryBoi87',
+  //     location: 'Florida Georgia Line',
+  //     favBait: 'Spinner jig',
+  //     tagLine: 'Fish on!!!',
+  //     topFish: '8lbs 2oz'
+  //   }
+  // ],
 
   isDeleting: false,
   deleteError: '',
