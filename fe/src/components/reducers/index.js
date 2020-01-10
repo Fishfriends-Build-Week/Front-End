@@ -13,12 +13,43 @@ import {
 } from "../actions";
 
 export const initialState = {
+  userData: {
+    username: '',
+    
+  },
+  
+  isFetchingUser: false,
+  fetchUserError: '',
+
   isLoading: true,
   error: "",
+
   isLoggingIn: false,
   loggedIn: false,
   loginError: "",
-  userData: {}
+
+  isRegistering: false,
+  registerError: '',
+
+  fetchingUserAccount: false,
+  fetchUserAccountError: '',
+  // userAccount: [
+  //   {
+  //     id:1,
+  //     username:'CountryBoi87',
+  //     location: 'Florida Georgia Line',
+  //     favBait: 'Spinner jig',
+  //     tagLine: 'Fish on!!!',
+  //     topFish: '8lbs 2oz'
+  //   }
+  // ],
+
+  isDeleting: false,
+  deleteError: '',
+
+  isUpdatingUser: false,
+  updateUserError: '',
+  updateUser: false
 };
 
 export const reducer = (state = initialState, action) => {
@@ -64,6 +95,7 @@ export const reducer = (state = initialState, action) => {
       localStorage.removeItem("token");
       localStorage.removeItem("username");
       return { ...state, loggedIn: false };
+
     case LOGIN_FAIL:
       return { ...state, loginError: action.payload, isLoggingIn: false };
     case LOGIN_START:

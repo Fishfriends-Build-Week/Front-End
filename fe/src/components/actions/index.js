@@ -16,6 +16,20 @@ export const FETCH_USER_START = "FETCH_USER_START";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USER_FAIL = "FETCH_USER_FAIL";
 
+// export const FETCH_USER_ACCOUNT_START = "FETCH_USER_ACCOUNT_START";
+// export const FETCH_USER_ACCOUNT_SUCCESS = "FETCH_USER_ACCOUNT_SUCCESS";
+// export const FETCH_USER_ACCOUNT_FAIL = "FETCH_USER_ACCOUNT_SUCCESS";
+
+export const UPDATE_USER_START = "UPDATE_USER_START";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+
+export const DELETE_USER_START = "DELETE_USER_START";
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
+export const DELETE_USER_FAIL = "DELETE_USER_FAIL";
+
+export const SET_UPDATED_USER_FLAG = "SET_UPDATED_USER_FLAG";
+
 export const login = credentials => dispatch => {
     dispatch({type: LOGIN_START});
     console.log("Starting login... for: ", credentials);
@@ -26,6 +40,25 @@ export const login = credentials => dispatch => {
         dispatch({ type: LOGIN_SUCCESS, payload: res.data });
     })
     .catch(err => dispatch({ type: LOGIN_FAIL, payload: err.response}));
+};
+
+export const deleteUser = username => dispatch => {
+    dispatch({ type: DELETE_USER_START});
+
+    axiosWithAuth()
+    .delete(`/accounts/${username}`)
+    .then(res => {
+        console.log(res);
+        dispatch({ type: DELETE_USER_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+        console.log(err);
+        dispatch({ type: DELETE_USER_FAIL, payload: err });
+    });
+};
+
+export const setUpdatedUserFlag = flag => dispatch => {
+    dispatch({ type: SET_UPDATED_USER_FLAG, payload: flag });
 };
 
 export const register = credentials => dispatch => {
@@ -46,6 +79,18 @@ export const register = credentials => dispatch => {
         dispatch({ type: REGISTER_FAIL, payload: err});
     });
 };
+
+// export const getUserAccounts = () => dispatch => {
+//     dispatch({ type: FETCH_USER_ACCOUNT_START });
+//     axiosWithAuth()
+//     .get(`/accounts/usename`)
+//     .then(res => {
+//         dispatch({ type: FETCH_USER_ACCOUNT_SUCCESS, payload: res.data });
+//     })
+//     .catch(err => {
+//         dispatch({ type: FETCH_USER_ACCOUNT_FAIL, payload: err.message });
+//     });
+// };
 
 export const getUser = username => dispatch => {
     dispatch({ type: FETCH_USER_START });
@@ -71,4 +116,22 @@ export const updateApp = () => dispatch => {
 
 export const logout = () => dispatch => {
     dispatch({ type: LOGOUT});
+};
+
+export const updateUser = (username, updateUser) => dispatch => {
+    dispatch({ type: UPDATE_USER_START });
+    
+    axiosWithAuth()
+    .put(`/accounts/${username}`, {username, ...updateUser })
+    .then(res => {
+        console.log(res);
+        dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
+        setTimeout(() => {
+            dispatch(setUpdatedUserFlag(false));
+        }, 6000);
+    })
+    .catch(err => {
+        console.log(err);
+        dispatch({ type: UPDATE_USER_FAIL, payload: err.message });
+    });
 };

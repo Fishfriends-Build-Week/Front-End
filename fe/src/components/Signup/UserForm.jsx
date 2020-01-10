@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import FormUserDetails from './FormUserDetails';
-import Confirm from './Confirm'
 import { Redirect } from 'react-router-dom';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
+
+
+
+
+
 const UserForm = props => {
   
-    const [steps, setSteps] = useState({
-      step: 1
-    });
-
     const [users, setUsers] = useState({
         username: '',
         password: '',
@@ -62,45 +62,25 @@ const UserForm = props => {
           });
         } 
       };
-    
-    const nextStep = () => {
-        const { step } = steps;
-        setSteps({ ...steps, step: step + 1});
-    };
-
-    const prevStep = () => {
-        const { step } = steps;
-        setSteps({ ...steps, step: step - 1});
-    };
+  
 
     const handleChanges = input => e => {
         setUsers({ ...users, [input]: e.target.value });
-        console.log('Changes to user state', steps, users)
+        console.log('Changes to user state', users)
     };
 
-    // const { step } = users;
-    switch (steps) {
+    const { step } = users;
+    switch (step) {
         default:
         case 1:
             return(
                 <FormUserDetails
-                nextStep={nextStep}
                 handleChanges={handleChanges}
                 values={users}
                 onSubmit={onSubmit}
                 />
             );
-
         case 2: 
-            return(
-                <Confirm
-                nextStep={nextStep}
-                prevStep={prevStep}
-                
-                values={users}
-                />
-            );
-        case 3: 
             return <Redirect to='/profile' />
     }
 };

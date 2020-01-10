@@ -3,17 +3,18 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/styles';
+// import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles({
     wrapper: {
         maxWidth: '40%',
         height: '50vh',
-        background: '#00FFFF',
+        background: '#1DA1F2',
         justifyContent: 'center',
         alignItems: 'center',
         display: 'flex',
         margin: '0 auto',
-        boxShadow: '6px 8px 5px #000'
+        boxShadow: '8px 8px 5px #FF4C05'
     },
 
     form: {
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
         borderRadius: '5px',
         alignItems: 'center',
         justifyContent:'center',
-        boxShadow: '5px 5px 5px #000'
+        boxShadow: '5px 5px 5px #0415BF'
         
     }
 })
@@ -36,7 +37,6 @@ const FormUserDetails = props => {
     console.log(props, 'this is props formuserd')
     const next = e => {
         e.preventDefault();
-        props.nextStep();
         props.onSubmit(e);
     }
 
@@ -50,7 +50,7 @@ const FormUserDetails = props => {
     return (
         <div className={classes.wrapper}>
         <Container className={classes.form}>
-
+        
             <TextField className={classes.text}
                 helperText={values.usernameError}
                 onChange={handleChanges('username')}
@@ -76,19 +76,6 @@ const FormUserDetails = props => {
                 id='password'
                 autoComplete='current-password' 
                 />
-            {/* <TextField className={classes.text}
-                onChange={handleChanges('cPassword')}
-                defaultValue={values.cPassword}
-                variant='outlined'
-                margin='normal'
-                required
-                fullWidth
-                name='cPassword'
-                label='Confirm Password'
-                type='password'
-                id='cPassword'
-                autoComplete='current-password' 
-                /> */}
             <Button
                 type='submit'
                 onSubmit={props.onSubmit}
