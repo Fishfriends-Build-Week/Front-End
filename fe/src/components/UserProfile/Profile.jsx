@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { axiosWithAuth } from '../../utils/axiosWithAuth';
+import React from 'react';
+// import { Redirect } from 'react-router-dom';
+import {
+  connect
+  // useSelector
+} from "react-redux";
+
+import {
+  logout
+} from "../actions";
+
+// import { Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { useSelector } from 'react-redux';
-import { Divider } from '@material-ui/core';
-
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -62,65 +69,71 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Profile = () => {
-    // const { username } = useSelector(state => state.reducer.userData);
-    const [user, setUser] = useState({
-        username: '',
-        
-    });
-
-    useEffect(() => {
-    //     axiosWithAuth()
-    //     .get(`https://fish-friends-build-week.herokuapp.com/accounts/${username}`)
-    //     .then(res => {
-    //         console.log(res);
-    //         setUser(res.data);
-    //     })
-    //     .catch(err => console.log('use: ', err));
-        let u = localStorage.getItem("username");
-        console.log(`TCL: Profile -> username`, u);
-
-        setUser({username: u});
-    },[]);
-
+const Profile = (props) => {
     const classes = useStyles();
-    return(
-        <Paper className={classes.root}>
-            <Typography className={classes.name} variant='h5' component='h3'>
-                {user.username}
-             </Typography>
-        {/* <Divider className={classes.divider} />
-            <Typography className={classes.bait} variant='h5' component='h3'>
-                <span className={classes.baitTitle}>Favorite Bait:</span> ${user.favBait}
-            </Typography>
-            <Divider className={classes.divider} />
-            <section className={classes.sectionRow}>
-                <div className={classes.leftSection}>
-                    <Typography className={classes.header} variant='h5' component='h3'>
-                        Tagline
-                    </Typography>
-                    <Typography
-                    className={classes.info}
-                    color='textSecondary'
-                    component='p'
-                    >
-                        {user.tagLine}
-                    </Typography>
-                </div>
-                <div className={classes.rightSection}>
-                    <Typography className={classes.header} variant='h5' component='h3'>
-                        Biggest Fish Caught
-                    </Typography>
-                    <Typography
-                    className={classes.info}
-                    color='textSecondary'
-                    component='p'>
-                        {user.topFish}    
-                    </Typography>    
-                </div> 
-            </section> */}
-        </Paper>
-    ); 
+
+    if (props.loggedIn) {
+      return(
+          <Paper className={classes.root}>
+              <Typography className={classes.name} variant='h5' component='h3'>
+                  Welcome {props.loginInfo.username}
+              </Typography>
+          {/* <Divider className={classes.divider} />
+              <Typography className={classes.bait} variant='h5' component='h3'>
+                  <span className={classes.baitTitle}>Favorite Bait:</span> ${user.favBait}
+              </Typography>
+              <Divider className={classes.divider} />
+              <section className={classes.sectionRow}>
+                  <div className={classes.leftSection}>
+                      <Typography className={classes.header} variant='h5' component='h3'>
+                          Tagline
+                      </Typography>
+                      <Typography
+                      className={classes.info}
+                      color='textSecondary'
+                      component='p'
+                      >
+                          {user.tagLine}
+                      </Typography>
+                  </div>
+                  <div className={classes.rightSection}>
+                      <Typography className={classes.header} variant='h5' component='h3'>
+                          Biggest Fish Caught
+                      </Typography>
+                      <Typography
+                      className={classes.info}
+                      color='textSecondary'
+                      component='p'>
+                          {user.topFish}    
+                      </Typography>    
+                  </div> 
+              </section> */}
+          </Paper>
+      );
+    } else {
+      // return <Redirect to='/login' />;
+      props.logout();
+    }
 };
 
-export default Profile;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    error: state.error,
+    isLoggingIn: state.isLoggingIn,
+    loggedIn: state.loggedIn,
+    loginError: state.loginError,
+    loginInfo: state.loginInfo
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => dispatch(logout())
+  }
+}
+
+export default connect(
+  mapStateToProps
+  ,mapDispatchToProps
+)(Profile);

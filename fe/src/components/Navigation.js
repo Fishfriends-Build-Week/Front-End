@@ -1,21 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { connect } from "react-redux";
 
 const Navigation = (props) => {
-  //#region data
-  const [token, setToken] = useState();
-  const [username, setUsername] = useState("");
-  //#endregion data
-
   //#region useEffect monitor(s)
   useEffect(() => {
     console.log(`Navigation -> props`, props);
   }, [props]);
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    setUsername(localStorage.getItem("username"));
-    // eslint-disable-next-line
-  }, [localStorage.getItem("token")]);
   //#endregion useEffect monitor(s)
 
   //#region JSX
@@ -25,9 +16,9 @@ const Navigation = (props) => {
       <NavLink to='/expedition'>Expedition</NavLink>
       <NavLink to='/echo'>Echo</NavLink>
       <NavLink to='/explore'>Explore</NavLink>
-      {props.loggedIn || token ? (  //TODO: token is temporary here until props.loggedIn is working
+      {props.loggedIn ? (
         <>
-          <NavLink to='/profile'>{username}'s Profile</NavLink>
+          <NavLink to='/profile'>{props.loginInfo.username}'s Profile</NavLink>
           <NavLink to='/logout'>Logout</NavLink>
         </>
       ) : (
@@ -41,4 +32,18 @@ const Navigation = (props) => {
   //#endregion JSX
 };
 
-export default Navigation;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    error: state.error,
+    isLoggingIn: state.isLoggingIn,
+    loggedIn: state.loggedIn,
+    loginError: state.loginError,
+    loginInfo: state.loginInfo
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(Navigation);
