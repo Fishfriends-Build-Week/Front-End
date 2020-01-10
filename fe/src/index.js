@@ -20,9 +20,9 @@ const rootElement = document.getElementById("root");
 
 ReactDOM.render(
   <Provider store={store}>
-    <CookiesProvider>
+    {/* <CookiesProvider> */}
       <App />
-    </CookiesProvider>
+    {/* </CookiesProvider> */}
   </Provider>
   ,rootElement
 );
