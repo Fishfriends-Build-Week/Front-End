@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {
   createStore
   ,applyMiddleware
-  // ,combineReducers
+  ,combineReducers
 } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -14,10 +14,10 @@ import { reducer } from './components/reducers/index'
 import App from './App';
 import './index.scss';
 
-// const rootReducer = combineReducers({ reducer });
+const rootReducer = combineReducers({ reducer });
 // const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
-const store = createStore(reducer, applyMiddleware(thunk, logger));
+const store = createStore(rootReducer, applyMiddleware(thunk, logger));
 
 const rootElement = document.getElementById("root");
 

@@ -11,7 +11,7 @@ import {useSelector, useDispatch } from 'react-redux';
 
 
 const UserForm = props => {
-    const loggedIn = useSelector(state => state.reducer.loggedIn);
+    const loggedIn = useSelector(state => state.reducer.login);
     const dispatch = useDispatch();
     const [users, setUsers] = useState({
         username: '',
@@ -21,7 +21,7 @@ const UserForm = props => {
 
     console.log('users from user form', users)
 
-    if (loggedIn) return <Redirect to='/profile' />;
+    // if (loggedIn) return <Redirect to='/profile' />;
     
     const validate = () => {
         let isError = false;
@@ -51,20 +51,21 @@ const UserForm = props => {
           username: users.username,
           password: users.password
         }
-        axiosWithAuth()
-        .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
-        .then(res => {
-          // props.setIsLoggedIn(true);
-          props.history.push('/profile');
-        })
-        .catch(err => {
-          console.log('The big one that got away', err);
-        });
+        // // axiosWithAuth()
+        // dispatch(register(credentials))
+        // .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
+        // .then(res => {
+        //   props.loggedIn(true);
+        //   // props.history.push('/profile');
+        // })
+        // .catch(err => {
+        //   console.log('The big one that got away', err);
+        // });
 
         const err = validate();
     
         if (!err) {
-          dispatch(register(credentials))
+          dispatch(register(credentials, props))
     
           setUsers({
             username: '',
@@ -90,8 +91,8 @@ const UserForm = props => {
                 onSubmit={onSubmit}
                 />
             );
-        case 2: 
-            return <Redirect to='/profile' />
+    //     case 2: 
+    //         return <Redirect to='/profile' />
     }
 };
 

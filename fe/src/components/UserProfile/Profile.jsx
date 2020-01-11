@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 // import { Redirect } from 'react-router-dom';
 import {
-  connect
+  connect, useSelector
   // useSelector
 } from "react-redux";
 
@@ -13,6 +13,7 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,14 +70,29 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const Profile = (props) => {
-    const classes = useStyles();
+const Profile = () => {
+    const { username } = useSelector(state => state.reducer.loginInfo);
+    const [user, setUser] = useState({
+        account_id: 0,
+        username: ''
+    })
 
-    if (props.loggedIn) {
+    useEffect(() => {
+        axiosWithAuth()
+        .get(`/accounts/${username}`)
+        .then(res => {
+            console.log(res);
+            setUser(res.data);
+        })
+        .catch(err => console.log('use: ',err));
+    },[username]);
+    // const username = localStorage.getItem("username")
+    const classes = useStyles();
+    // if (props.loggedIn) {
       return(
           <Paper className={classes.root}>
               <Typography className={classes.name} variant='h5' component='h3'>
-                  Welcome {props.loginInfo.username}
+                  Welcome {user.username}
               </Typography>
           {/* <Divider className={classes.divider} />
               <Typography className={classes.bait} variant='h5' component='h3'>
@@ -110,10 +126,10 @@ const Profile = (props) => {
               </section> */}
           </Paper>
       );
-    } else {
-      // return <Redirect to='/login' />;
-      props.logout();
-    }
+    // } else {
+    //   // return <Redirect to='/login' />;
+    //   props.logout();
+    // }
 };
 
 const mapStateToProps = (state) => {

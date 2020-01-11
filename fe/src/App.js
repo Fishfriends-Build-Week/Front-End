@@ -56,7 +56,7 @@ const App = (props) => {
         <Route exact path='/signup' component={UserForm} />
         <Route exact path="/login" component={Login} />
 
-        <PrivateRoute exact path="/profile" component={Profile} />
+        <Route exact path="/profile" component={Profile} />
         <Route exact path="/logout"
           render={(props) => <Logout {...props} />}
         />
@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     // register: register,
     // // login: login,
-    login: (credentials) => dispatch(login(credentials)),
+    login: (credentials, props) => dispatch(login(credentials, props)),
     // getUser: getUser,
     // // getUserAccounts: getUserAccounts,
     // updateUser: updateUser,

@@ -50,6 +50,7 @@ export const initialState = {
   loginInfo: {
     account_id: -1,
     username: '',
+    password: ''
   },
 
   isFetchingUser: false,
@@ -71,8 +72,7 @@ export const reducer = (state = initialState, action) => {
     case REGISTER_START:
       return { ...state, isRegistering: true, registerError: ""};
     case REGISTER_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("username", action.payload.loginInfo.username);
+      localStorage.setItem("username", action.payload.user.username);
       return { ...state, isRegistering: false, loggedIn: true };
     case REGISTER_FAIL:
       return { ...state, isRegistering: false, registerError: action.payload };
@@ -80,7 +80,7 @@ export const reducer = (state = initialState, action) => {
     case LOGIN_START:
       return { ...state, isLoggingIn: true, loginError: "" };
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
+      
 
       let id = action.payload.loginInfo.account_id;
       localStorage.setItem("account_id", id);

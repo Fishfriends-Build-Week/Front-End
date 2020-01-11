@@ -45,7 +45,7 @@ export const LOGOUT = "LOGOUT";
 //     }
 // };
 
-export const register = (credentials) => dispatch => {
+export const register = (credentials, props) => dispatch => {
     console.log(`actions: register -> credentials`, credentials);
     dispatch({ type: REGISTER_START });
     axios
@@ -56,7 +56,7 @@ export const register = (credentials) => dispatch => {
     .then(res => {
         console.log(res);
         dispatch({ type: REGISTER_SUCCESS, payload: res.data });
-        getUser(res.data.username);
+        props.history.push('/login')
     })
     .catch(err => {
         console.log(err);
@@ -64,7 +64,7 @@ export const register = (credentials) => dispatch => {
     });
 };
 
-export const login = (credentials) => dispatch => {
+export const login = (credentials, props )  => dispatch => {
     console.log(`actions: login -> credentials`, credentials);
     dispatch({type: LOGIN_START});
     axios
@@ -72,6 +72,9 @@ export const login = (credentials) => dispatch => {
     .then(res => {
         console.log(`actions: login -> response`, res);
         dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+        console.log(res.data.token)
+        localStorage.setItem("token", res.data.token)
+        // props.history.push('/profile')
     })
     .catch(err => dispatch({ type: LOGIN_FAIL, payload: err.response}));
 };
