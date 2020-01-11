@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
-import FormUserDetails from './FormUserDetails';
 import { Redirect } from 'react-router-dom';
+import { connect } from "react-redux";
+// import {useSelector, useDispatch } from 'react-redux';
+
+import { register, login } from '../actions/index'
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
-import { register } from '../actions/index'
-import {useSelector, useDispatch } from 'react-redux';
 
+import FormUserDetails from './FormUserDetails';
 
-
-
-
-
-const UserForm = props => {
-    const loggedIn = useSelector(state => state.reducer.loggedIn);
-    const dispatch = useDispatch();
+const UserForm = (props) => {
+    // const loggedIn = useSelector(state => state.reducer.loggedIn);
+    // const dispatch = useDispatch();
     const [users, setUsers] = useState({
         username: '',
         password: '',
-        
     });
 
     console.log('users from user form', users)
 
-    if (loggedIn) return <Redirect to='/profile' />;
+    if (props.loggedIn) return <Redirect to='/profile' />;
     
     const validate = () => {
         let isError = false;
@@ -54,8 +51,9 @@ const UserForm = props => {
         axiosWithAuth()
         .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
         .then(res => {
-          // props.setIsLoggedIn(true);
-          props.history.push('/profile');
+          // // props.setIsLoggedIn(true);
+          // props.history.push('/profile');
+          props.login(credentials);
         })
         .catch(err => {
           console.log('The big one that got away', err);
@@ -64,7 +62,8 @@ const UserForm = props => {
         const err = validate();
     
         if (!err) {
-          dispatch(register(credentials))
+          // dispatch(register(credentials))
+          props.register(credentials);
     
           setUsers({
             username: '',
@@ -75,24 +74,47 @@ const UserForm = props => {
   
 
     const handleChanges = input => e => {
-        setUsers({ ...users, [input]: e.target.value });
-        console.log('Changes to user state', users)
+      setUsers({ ...users, [input]: e.target.value });
+      console.log('Changes to user state', users)
     };
 
     const { step } = users;
     switch (step) {
-        default:
-        case 1:
-            return(
-                <FormUserDetails
-                handleChanges={handleChanges}
-                values={users}
-                onSubmit={onSubmit}
-                />
-            );
-        case 2: 
-            return <Redirect to='/profile' />
+      default:
+      case 1:
+        return(
+          <FormUserDetails
+            handleChanges={handleChanges}
+            values={users}
+            onSubmit={onSubmit}
+          />
+        );
+      case 2: 
+        return <Redirect to='/profile' />
     }
 };
 
-export default UserForm;
+// export default UserForm;
+
+const mapStateToProps = (state) => {
+  return {
+    isLoading: state.isLoading,
+    error: state.error,
+    isLoggingIn: state.isLoggingIn,
+    loggedIn: state.loggedIn,
+    loginError: state.loginError,
+    loginInfo: state.loginInfo
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (credentials) => dispatch(register(credentials)),
+    login: (credentials) => dispatch(login(credentials))
+  }
+}
+
+export default connect(
+  mapStateToProps
+  ,mapDispatchToProps
+)(UserForm);
