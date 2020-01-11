@@ -24,6 +24,9 @@ import UserForm from './components/Signup/UserForm';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import Profile from './components/UserProfile/Profile';
+import Expedition from './components/Expedition';
+import Explore from './components/Explore';
+import Echo from './components/Echo';
 
 import './App.scss';
 
@@ -60,6 +63,10 @@ const App = (props) => {
         <Route exact path="/logout"
           render={(props) => <Logout {...props} />}
         />
+
+        <Route exact path="/expedition" component={Expedition} />
+        <Route exact path="/explore" component={Explore} />
+        <Route exact path="/echo" component={Echo} />
       </div>
     </Router>
   );

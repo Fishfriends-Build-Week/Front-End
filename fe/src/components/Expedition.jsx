@@ -2,32 +2,27 @@ import React, { useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { connect } from "react-redux";
 
-const Navigation = (props) => {
+const Expedition = (props) => {
   //#region useEffect monitor(s)
   useEffect(() => {
-    console.log(`Navigation -> props`, props);
+    console.log(`Expedition -> props`, props);
   }, [props]);
   //#endregion useEffect monitor(s)
 
   //#region JSX
   return (
-    <nav>
-      <Link to='/'>Home</Link>
-      <NavLink to='/expedition'>Expedition</NavLink>
-      <NavLink to='/echo'>Echo</NavLink>
-      <NavLink to='/explore'>Explore</NavLink>
+    <div>
       {props.loggedIn ? (
         <>
-          <NavLink to='/profile'>{props.loginInfo.username}'s Profile</NavLink>
-          <NavLink to='/logout'>Logout</NavLink>
+          <div>Log your fishing trips and catches using the form below:</div>
+          <div>(Pending...)</div>
         </>
       ) : (
         <>
-          <NavLink to='/signup'>Sign Up</NavLink>
-          <NavLink to='/login'>Login</NavLink>
+          <NavLink to='/login'>Login</NavLink> to track your fishing trip locations &amp; catches!
         </>
       )}
-    </nav>
+    </div>
   );
   //#endregion JSX
 };
@@ -43,7 +38,13 @@ const mapStateToProps = (state) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // login: (credentials) => dispatch(login(credentials))
+  }
+}
+
 export default connect(
-  mapStateToProps,
-  {}
-)(Navigation);
+  mapStateToProps
+  ,mapDispatchToProps
+)(Expedition);

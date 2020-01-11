@@ -2,6 +2,8 @@ import axios from 'axios';
 import { axiosWithAuth } from '../../utils/axiosWithAuth';
 // import { getQueriesForElement } from '@testing-library/react';
 
+import { apiSwitcher } from '../../utils/apiSwitcher';
+const API = apiSwitcher();
 
 // export const APP_UPDATE = "APP_UPDATE";
 
@@ -50,7 +52,7 @@ export const register = (credentials) => dispatch => {
     dispatch({ type: REGISTER_START });
     axios
     .post(
-        "https://fish-friends-build-week.herokuapp.com/accounts/register",
+        API+"/accounts/register",
         credentials
     )
     .then(res => {
@@ -68,7 +70,7 @@ export const login = (credentials) => dispatch => {
     console.log(`actions: login -> credentials`, credentials);
     dispatch({type: LOGIN_START});
     axios
-    .post("https://fish-friends-build-week.herokuapp.com/accounts/login", credentials)
+    .post(API+"/accounts/login", credentials)
     .then(res => {
         console.log(`actions: login -> response`, res);
         dispatch({ type: LOGIN_SUCCESS, payload: res.data });
