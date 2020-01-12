@@ -3,17 +3,21 @@ import React, {
   useEffect
 } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { LastLocationProvider } from 'react-router-last-location';
 
 import { connect } from 'react-redux';
 import { initialState, reducer } from './components/reducers';
 import {
   // register,
   login,
+  // getUsers,
   // getUser,
+  getUserById,
   // // getUserAccounts,
   // updateUser,
   // setUpdatedUserFlag,
   // deleteUser,
+  // apiAction,
   logout
 } from './components/actions';
 
@@ -39,35 +43,61 @@ const App = (props) => {
   //#region useEffect monitor(s)
   useEffect(() => {
     console.log(`App -> state`, state);
+
+    if (!state.loggedIn) {
+      const u = state.loginInfo.username;
+      const p = state.loginInfo.password;
+      console.log(`App -> state: username='${u}'...`);
+      console.log(`App -> state: password='${p}'...`);
+      if (u !== '' && p !== '') {
+        console.log(`App -> state: Attempting to re-login as '${u}'...`);
+        const c = {u, p}
+        props.login(c);
+      }
+    }
+    // eslint-disable-next-line
   }, [state]);
 
   useEffect(() => {
     console.log(`App -> props`, props);
+
+    if (!props.loggedIn) {
+      const t = localStorage.getItem("token")
+      const i = localStorage.getItem("account_id")
+      if (t && i) {
+        if (props.loginInfo.account_id === -1) {
+          console.log(`App -> props: getUserById(${i})...`);
+          props.getUserById(i);
+        }
+      }
+    }
   }, [props]);
   //#endregion useEffect monitor(s)
 
   //#region JSX
   return (
     <Router>
-      <div className="App">
-        <header>
-          <Navigation {...state} />
-        </header>
-
-        <Route exact path="/" component={Welcome} />
-
-        <Route exact path='/signup' component={UserForm} />
-        <Route exact path="/login" component={Login} />
-
-        <PrivateRoute exact path="/profile" component={Profile} />
-        <Route exact path="/logout"
-          render={(props) => <Logout {...props} />}
-        />
-
-        <Route exact path="/expedition" component={Expedition} />
-        <Route exact path="/explore" component={Explore} />
-        <Route exact path="/echo" component={Echo} />
-      </div>
+      <LastLocationProvider>
+        <div className="App">
+          <header>
+            <Navigation {...state} />
+          </header>
+  
+          <Route exact path="/" component={Welcome} />
+  
+          <Route exact path='/signup' component={UserForm} />
+          <Route exact path="/login" component={Login} />
+  
+          <PrivateRoute exact path="/profile" component={Profile} />
+          <Route exact path="/logout"
+            render={(props) => <Logout {...props} />}
+          />
+  
+          <Route exact path="/expedition" component={Expedition} />
+          <Route exact path="/explore" component={Explore} />
+          <Route exact path="/echo" component={Echo} />
+        </div>
+      </LastLocationProvider>
     </Router>
   );
   //#endregion JSX
@@ -91,12 +121,15 @@ const mapDispatchToProps = (dispatch) => {
     // register: register,
     // // login: login,
     login: (credentials) => dispatch(login(credentials)),
-    // getUser: getUser,
+    // getUsers: () => dispatch(getUsers()),
+    // getUser: (username) => dispatch(getUser(username)),
+    getUserById: (id) => dispatch(getUserById(id)),
     // // getUserAccounts: getUserAccounts,
     // updateUser: updateUser,
     // setUpdatedUserFlag: setUpdatedUserFlag,
     // deleteUser: deleteUser,
     // // logout: logout
+    // apiAction: (action, endpoint, body) => dispatch(apiAction(action, endpoint, body)),
     logout: () => dispatch(logout())
   }
 }

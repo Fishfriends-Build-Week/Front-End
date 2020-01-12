@@ -15,6 +15,10 @@ export const LOGIN_START = "LOGIN_START";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 
+export const FETCH_USERS_START = "FETCH_USERS_START";
+export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
+export const FETCH_USERS_FAIL = "FETCH_USERS_FAIL";
+
 export const FETCH_USER_START = "FETCH_USER_START";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USER_FAIL = "FETCH_USER_FAIL";
@@ -28,6 +32,15 @@ export const SET_UPDATED_USER_FLAG = "SET_UPDATED_USER_FLAG";
 export const DELETE_USER_START = "DELETE_USER_START";
 export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
 export const DELETE_USER_FAIL = "DELETE_USER_FAIL";
+
+export const API_ACTION_START = "API_ACTION_START";
+export const API_ACTION_SUCCESS = "API_ACTION_SUCCESS";
+export const API_ACTION_FAIL = "API_ACTION_FAIL";
+
+export const LOGS_DATA = "LOGS_DATA";
+export const LOCATIONS_DATA = "LOCATIONS_DATA";
+export const BAIT_DATA = "BAIT_DATA";
+export const FISH_DATA = "FISH_DATA";
 
 export const LOGOUT = "LOGOUT";
 
@@ -78,11 +91,41 @@ export const login = (credentials) => dispatch => {
     .catch(err => dispatch({ type: LOGIN_FAIL, payload: err.response}));
 };
 
+export const getUsers = () => dispatch => {
+    console.log(`actions: getUsers`);
+    dispatch({ type: FETCH_USERS_START });
+    axios
+    .get(API+"/accounts")
+    .then(res => {
+        console.log("GET USERS: ", res);
+        dispatch({ type: FETCH_USERS_SUCCESS, payload: res.data.users });
+    })
+    .catch(err => {
+        console.log(err.response);
+        dispatch({ type: FETCH_USERS_FAIL, payload: err });
+    });
+};
+
 export const getUser = (username) => dispatch => {
     console.log(`actions: getUser -> username`, username);
     dispatch({ type: FETCH_USER_START });
     axiosWithAuth()
-    .get(`accounts/${username}`)
+    .get(API+`/accounts/${username}`)
+    .then(res => {
+        console.log("GET USER: ", res);
+        dispatch({ type: FETCH_USER_SUCCESS, payload: res.data });
+    })
+    .catch(err => {
+        console.log(err.response);
+        dispatch({ type: FETCH_USER_FAIL, payload: err });
+    });
+};
+
+export const getUserById = (id) => dispatch => {
+    console.log(`actions: getUserById -> id`, id);
+    dispatch({ type: FETCH_USER_START });
+    axiosWithAuth()
+    .get(API+`/accounts/${id}`)
     .then(res => {
         console.log("GET USER: ", res);
         dispatch({ type: FETCH_USER_SUCCESS, payload: res.data });
@@ -97,7 +140,7 @@ export const getUser = (username) => dispatch => {
 //     console.log(`actions: getUserAccounts`);
 //     dispatch({ type: FETCH_USER_ACCOUNT_START });
 //     axiosWithAuth()
-//     .get(`/accounts/username`)
+//     .get(API+`/accounts/username`)
 //     .then(res => {
 //         dispatch({ type: FETCH_USER_ACCOUNT_SUCCESS, payload: res.data });
 //     })
@@ -111,7 +154,7 @@ export const updateUser = (username, updateUser) => dispatch => {
     dispatch({ type: UPDATE_USER_START });
     
     axiosWithAuth()
-    .put(`/accounts/${username}`, {username, ...updateUser })
+    .put(API+`/accounts/${username}`, {username, ...updateUser })
     .then(res => {
         console.log(res);
         dispatch({ type: UPDATE_USER_SUCCESS, payload: res.data });
@@ -135,7 +178,7 @@ export const deleteUser = (username) => dispatch => {
     dispatch({ type: DELETE_USER_START});
 
     axiosWithAuth()
-    .delete(`/accounts/${username}`)
+    .delete(API+`/accounts/${username}`)
     .then(res => {
         console.log(res);
         dispatch({ type: DELETE_USER_SUCCESS, payload: res.data });
@@ -144,6 +187,110 @@ export const deleteUser = (username) => dispatch => {
         console.log(err);
         dispatch({ type: DELETE_USER_FAIL, payload: err });
     });
+};
+
+export const apiAction = (action, endpoint, body) => dispatch => {
+  console.log(`apiAction -> action, endpoint`, action, endpoint);
+  if (body) console.log(`apiAction -> body`, body);
+
+  const timeout = 5000;
+
+  dispatch({ type: API_ACTION_START });
+
+  switch (action.toLowerCase()) {
+    default:
+      dispatch({ type: API_ACTION_FAIL, payload: 'Unsupported action requested!' });
+      break;
+    case 'get':
+      setTimeout(() => {
+        axiosWithAuth()
+          .get(API+endpoint)
+          .then(res => {
+            console.log(`apiAction: ${action} ${endpoint} results:`, res);
+            dispatch({
+              type: API_ACTION_SUCCESS,
+              payload: res.data
+            });
+            let e = endpoint.replace(/\/|(\d*)/,'');
+            let t,d;
+            switch (e) {
+              default:
+                console.log('Impossibru!!');
+                break;
+              case "logs":
+                t = LOGS_DATA;
+                d = res.data.logs;
+                break;
+              case "locations":
+                t = LOCATIONS_DATA;
+                d = res.data.locations;
+                break;
+              case "bait":
+                t = BAIT_DATA;
+                d = res.data.bait;
+                break;
+              case "fish":
+                t = FISH_DATA;
+                d = res.data.fish;
+                break;
+            }
+            dispatch({type: t, payload: d});
+          })
+          .catch(err => {
+            console.log('apiAction error:', err);
+            dispatch({
+              type: API_ACTION_FAIL,
+              payload: "error loading data"
+            });
+          });
+      }, timeout);
+      break;
+    case 'post':
+      if (!body) dispatch({ type: API_ACTION_FAIL, payload: 'body is required for this action, but was not supplied!' });
+      setTimeout(() => {
+        axiosWithAuth()
+          .post(API+endpoint, body)
+          .then(res => {
+              console.log(`apiAction: ${action} ${endpoint} results:`, res);
+              dispatch({ type: API_ACTION_SUCCESS, payload: res.data });
+          })
+          .catch(err => {
+              console.log('apiAction error:', err);
+              dispatch({ type: API_ACTION_FAIL, payload: err.message });
+          });
+      }, timeout);
+      break;
+    case 'put':
+      if (!body) dispatch({ type: API_ACTION_FAIL, payload: 'body is required for this action, but was not supplied!' });
+      setTimeout(() => {
+        axiosWithAuth()
+          .put(API+endpoint, body)
+          .then(res => {
+              console.log(`apiAction: ${action} ${endpoint} results:`, res);
+              dispatch({ type: API_ACTION_SUCCESS, payload: res.data });
+          })
+          .catch(err => {
+              console.log('apiAction error:', err);
+              dispatch({ type: API_ACTION_FAIL, payload: err.message });
+          });
+      }, timeout);
+      break;
+    case 'del':
+    case 'delete':
+      setTimeout(() => {
+        axiosWithAuth()
+          .delete(API+endpoint)
+          .then(res => {
+            console.log(`apiAction: ${action} ${endpoint} results:`, res);
+            dispatch({ type: API_ACTION_SUCCESS, payload: res.data });
+          })
+          .catch(err => {
+            console.log('apiAction error:', err);
+            dispatch({ type: API_ACTION_FAIL, payload: err });
+          });
+      }, timeout);
+      break;
+  }
 };
 
 export const logout = () => dispatch => {

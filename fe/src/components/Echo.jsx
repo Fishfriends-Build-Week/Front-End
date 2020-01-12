@@ -5,6 +5,10 @@ import {
 } from 'react-router-dom';
 import { connect } from "react-redux";
 
+import {
+  apiAction
+} from './actions';
+
 const Echo = (props) => {
   //#region useEffect monitor(s)
   useEffect(() => {
@@ -44,6 +48,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     // login: (credentials) => dispatch(login(credentials))
+    apiAction: (action, endpoint, body) => dispatch(apiAction(action, endpoint, body))
   }
 }
 

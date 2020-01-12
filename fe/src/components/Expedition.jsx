@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import {
+  NavLink,
+  // Link
+} from 'react-router-dom';
 import { connect } from "react-redux";
+
+import {
+  apiAction
+} from './actions';
 
 const Expedition = (props) => {
   //#region useEffect monitor(s)
@@ -14,13 +21,13 @@ const Expedition = (props) => {
     <div>
       {props.loggedIn ? (
         <>
-          <div>Log your fishing trips and catches using the form below:</div>
-          <div>(Pending...)</div>
+          <h4>Log your fishing trips and catches using the form below:</h4>
+          <h5>(Pending...)</h5>
         </>
       ) : (
-        <>
+        <h4>
           <NavLink to='/login'>Login</NavLink> to track your fishing trip locations &amp; catches!
-        </>
+        </h4>
       )}
     </div>
   );
@@ -41,6 +48,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     // login: (credentials) => dispatch(login(credentials))
+    apiAction: (action, endpoint, body) => dispatch(apiAction(action, endpoint, body))
   }
 }
 
