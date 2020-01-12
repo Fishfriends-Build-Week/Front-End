@@ -13,9 +13,9 @@ const Navigation = (props) => {
   return (
     <nav>
       <Link to='/'>Home</Link>
+      <NavLink to='/explore'>Explore</NavLink>
       <NavLink to='/expedition'>Expedition</NavLink>
       <NavLink to='/echo'>Echo</NavLink>
-      <NavLink to='/explore'>Explore</NavLink>
       {props.loggedIn ? (
         <>
           <NavLink to='/profile'>{props.loginInfo.username}'s Profile</NavLink>
