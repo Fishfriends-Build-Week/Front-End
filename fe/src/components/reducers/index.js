@@ -50,16 +50,6 @@ export const initialState = {
   loggedIn: false,
   loginError: "",
 
-  // userAccount: [
-  //   {
-  //     id:1,
-  //     username:'CountryBoi87',
-  //     location: 'Florida Georgia Line',
-  //     favBait: 'Spinner jig',
-  //     tagLine: 'Fish on!!!',
-  //     topFish: '8lbs 2oz'
-  //   }
-  // ],
   loginInfo: {
     account_id: -1,
     username: '',
@@ -111,7 +101,7 @@ export const reducer = (state = initialState, action) => {
     case LOGIN_START:
       return { ...state, isLoading: true, isLoggingIn: true, loginError: "" };
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload.token);
+      
 
       let id = action.payload.loginInfo.account_id;
       localStorage.setItem("account_id", id);
