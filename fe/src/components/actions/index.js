@@ -5,7 +5,8 @@ import { axiosWithAuth } from '../../utils/axiosWithAuth';
 import { apiSwitcher } from '../../utils/apiSwitcher';
 const API = apiSwitcher();
 
-// export const APP_UPDATE = "APP_UPDATE";
+export const RESET_ERROR_STATE = "RESET_ERROR_STATE";
+export const SET_ERROR_STATE = "SET_ERROR_STATE";
 
 export const REGISTER_START = "REGISTER_START";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
@@ -45,20 +46,14 @@ export const FISH_DATA = "FISH_DATA";
 export const LOGOUT = "LOGOUT";
 
 
-// //I really don't think there's any need for this. Paul
-// export const updateApp = (username) => dispatch => {
-//     console.log(`actions: updateApp -> username`, username);
-
-//     if (!username) {
-//       username = JSON.stringify(localStorage.getItem("username"), 10);
-//     }
-
-//     if (username) {
-//       getUser(username);
-//       const updates = {loggedIn, username};
-//       dispatch({ type: APP_UPDATE, payload: updates});
-//     }
-// };
+export const resetErrorState = () => dispatch => {
+  console.log(`actions: resetErrorState`);
+  dispatch({ type: RESET_ERROR_STATE });
+};
+export const setErrorState = (errorObject) => dispatch => {
+  console.log(`actions: setErrorState -> errorObject`, errorObject);
+  dispatch({ type: SET_ERROR_STATE, payload: errorObject });
+};
 
 export const register = (credentials) => dispatch => {
     console.log(`actions: register -> credentials`, credentials);
@@ -71,11 +66,11 @@ export const register = (credentials) => dispatch => {
     .then(res => {
         console.log(res);
         dispatch({ type: REGISTER_SUCCESS, payload: res.data });
-        getUser(res.data.username);
+        getUser(res.data.username); //TODO doesn't execute
     })
     .catch(err => {
         console.log(err);
-        dispatch({ type: REGISTER_FAIL, payload: err});
+        dispatch({ type: REGISTER_FAIL, payload: err.response});
     });
 };
 
@@ -233,7 +228,7 @@ export const apiAction = (action, endpoint, body) => dispatch => {
                 t = FISH_DATA;
                 d = res.data.fish;
                 break;
-            }
+            };
             dispatch({type: t, payload: d});
           })
           .catch(err => {
@@ -290,7 +285,7 @@ export const apiAction = (action, endpoint, body) => dispatch => {
           });
       }, timeout);
       break;
-  }
+  };
 };
 
 export const logout = () => dispatch => {

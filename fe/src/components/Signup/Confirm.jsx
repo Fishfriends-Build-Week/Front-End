@@ -30,12 +30,12 @@ const Confirm = props => {
         e.preventDefault();
         props.nextStep();
         props.onSubmit(e);
-    }
+    };
 
     const back = e => {
         e.preventDefault();
         props.prevStep();
-    }
+    };
     const { values } = props;
     return (
         <Paper className={classes.root}>
@@ -43,10 +43,10 @@ const Confirm = props => {
                 {values.email}
             </Typography>
             <Typography className={classes.text} variant='h5' component='h2'>
-                {values.username}    
+                {values.username}
             </Typography>
             <Typography className={classes.text} variant='h5' component='h2'>
-                {values.password}    
+                {values.password}
             </Typography>
             <br/>
             <Button
@@ -56,7 +56,7 @@ const Confirm = props => {
                 label='Continue'
                 style={styles.button}
                 onClick={next}>
-                    Confirm & Continue        
+                    Confirm & Continue
             </Button>
             <Button
                 margin='normal'
@@ -66,15 +66,15 @@ const Confirm = props => {
                 style={styles.button}
                 onClick={back}>
                 Go Back
-            </Button>    
+            </Button>
         </Paper>
     )
-}
+};
 
 const styles = {
     button: {
         margin: 15
     }
-}
+};
 
 export default Confirm;

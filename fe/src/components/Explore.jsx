@@ -24,7 +24,7 @@ const Explore = (props) => {
   useEffect(() => {
     if (props.loggedIn) {
       props.apiAction('get', '/logs', null);
-    }
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -52,7 +52,7 @@ const Explore = (props) => {
                     <div className="username">Logged by: <a href={"/accounts/"+l.account_id}>{l.username}</a></div>
                     <div className="iconGroup">
                       <div className="icon edit" onClick={() => {
-                        // props.editLog(l)
+                        // props.editLog(l)  //TODO
                       }}>
                         <FontAwesomeIcon icon={faEdit} />&nbsp;Edit
                       </div>
@@ -62,6 +62,7 @@ const Explore = (props) => {
                         <FontAwesomeIcon icon={faTrashAlt} />&nbsp;Delete
                       </div>
                     </div>
+                    &nbsp;
                   </div>
                 ))}
               </div>
@@ -69,7 +70,7 @@ const Explore = (props) => {
         </>
       ) : (
         <h4>
-          <NavLink to='/login'>Login</NavLink> to find &amp; view fishing locations &amp; great catches by other users!
+          <NavLink to='/signup'>Sign Up</NavLink> or <NavLink to='/login'>Login</NavLink> to find &amp; view fishing locations &amp; great catches by other users!
         </h4>
       )}
     </div>
@@ -80,7 +81,8 @@ const Explore = (props) => {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.isLoading,
-    error: state.error,
+    isError: state.isError,
+    errors: state.errors,
     isLoggingIn: state.isLoggingIn,
     loggedIn: state.loggedIn,
     loginError: state.loginError,
@@ -93,8 +95,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     // login: (credentials) => dispatch(login(credentials))
     apiAction: (action, endpoint, body) => dispatch(apiAction(action, endpoint, body))
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps
