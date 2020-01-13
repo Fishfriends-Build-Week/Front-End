@@ -8,6 +8,9 @@ import { axiosWithAuth } from '../../utils/axiosWithAuth';
 
 import FormUserDetails from './FormUserDetails';
 
+import { apiSwitcher } from '../../utils/apiSwitcher';
+const API = apiSwitcher();
+
 const UserForm = (props) => {
     // const loggedIn = useSelector(state => state.reducer.loggedIn);
     // const dispatch = useDispatch();
@@ -49,7 +52,7 @@ const UserForm = (props) => {
           password: users.password
         }
         axiosWithAuth()
-        .post('https://fish-friends-build-week.herokuapp.com/accounts/register', users)
+        .post(API+'/accounts/register', users)
         .then(res => {
           // // props.setIsLoggedIn(true);
           // props.history.push('/profile');

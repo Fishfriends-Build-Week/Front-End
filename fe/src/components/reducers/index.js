@@ -9,6 +9,10 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
 
+  FETCH_USERS_START,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_FAIL,
+
   FETCH_USER_START,
   FETCH_USER_SUCCESS,
   FETCH_USER_FAIL,
@@ -22,6 +26,15 @@ import {
   // DELETE_USER_START,
   // DELETE_USER_SUCCESS,
   // DELETE_USER_FAIL,
+
+  API_ACTION_START,
+  API_ACTION_SUCCESS,
+  API_ACTION_FAIL,
+
+  LOGS_DATA,
+  LOCATIONS_DATA,
+  BAIT_DATA,
+  FISH_DATA,
 
   LOGOUT
 } from "../actions";
@@ -37,16 +50,6 @@ export const initialState = {
   loggedIn: false,
   loginError: "",
 
-  // userAccount: [
-  //   {
-  //     id:1,
-  //     username:'CountryBoi87',
-  //     location: 'Florida Georgia Line',
-  //     favBait: 'Spinner jig',
-  //     tagLine: 'Fish on!!!',
-  //     topFish: '8lbs 2oz'
-  //   }
-  // ],
   loginInfo: {
     account_id: -1,
     username: '',
@@ -61,7 +64,12 @@ export const initialState = {
   updateUser: false,
 
   isDeleting: false,
-  deleteError: ''
+  deleteError: '',
+
+  logsData: [],
+  locationsData: [],
+  baitData: [],
+  fishData: []
 };
 
 export const reducer = (state = initialState, action) => {
@@ -70,15 +78,28 @@ export const reducer = (state = initialState, action) => {
 
   switch (action.type) {
     case REGISTER_START:
-      return { ...state, isRegistering: true, registerError: ""};
+      return { ...state,
+        isLoading: true,
+        isRegistering: true,
+        registerError: ""
+      };
     case REGISTER_SUCCESS:
-      localStorage.setItem("username", action.payload.user.username);
-      return { ...state, isRegistering: false, loggedIn: true };
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("username", action.payload.loginInfo.username);
+      return { ...state,
+        isLoading: false,
+        isRegistering: false,
+        loggedIn: true
+      };
     case REGISTER_FAIL:
-      return { ...state, isRegistering: false, registerError: action.payload };
+      return { ...state,
+        isLoading: false,
+        isRegistering: false,
+        registerError: action.payload
+      };
 
     case LOGIN_START:
-      return { ...state, isLoggingIn: true, loginError: "" };
+      return { ...state, isLoading: true, isLoggingIn: true, loginError: "" };
     case LOGIN_SUCCESS:
       
 
@@ -91,35 +112,83 @@ export const reducer = (state = initialState, action) => {
 
       localStorage.setItem("username", u);
 
-      return {
-        ...state,
+      return { ...state,
+        isLoading: false,
         isLoggingIn: false,
         loggedIn: true,
-        loginInfo: {
-          ...state.loginInfo,
+        loginInfo: { ...state.loginInfo,
           account_id: id,
-          username: u
+          username: u,
+          password: action.payload.loginInfo.password
         }
       };
     case LOGIN_FAIL:
-      return { ...state, loginError: action.payload, isLoggingIn: false };
+      return { ...state,
+        isLoading: false,
+        isLoggingIn: false,
+        loginError: action.payload
+      };
 
     case FETCH_USER_START:
-      return { ...state, isFetchingUser: true, fetchUserError: "" };
+      return { ...state,
+        isLoading: true,
+        isFetchingUser: true,
+        fetchUserError: ""
+      };
     case FETCH_USER_SUCCESS:
-      return {
-        ...state,
+      return { ...state,
+        isLoading: false,
         isFetchingUser: false,
         loginInfo: {
           ...action.payload
         }
       };
     case FETCH_USER_FAIL:
-      return {
-        ...state,
+      return { ...state,
+        isLoading: false,
         isFetchingUser: false,
         fetchUserError: action.payload
       };
+
+    case FETCH_USERS_START:
+      return { ...state,
+        isLoading: true,
+        isFetchingUser: true,
+        fetchUserError: ""
+      };
+    case FETCH_USERS_SUCCESS:
+      return { ...state,
+        isLoading: false,
+        isFetchingUser: false,
+        loginInfo: {
+          ...action.payload
+        }
+      };
+    case FETCH_USERS_FAIL:
+      return { ...state,
+        isLoading: false,
+        isFetchingUser: false,
+        fetchUserError: action.payload
+      };
+
+    case API_ACTION_START:
+      return { ...state, isLoading: true, error: "" };
+    case API_ACTION_SUCCESS:
+      return { ...state, isLoading: false };
+    case API_ACTION_FAIL:
+      return { ...state,
+        isLoading: false,
+        error: action.payload
+      };
+
+    case LOGS_DATA:
+      return { ...state, logsData: action.payload };
+    case LOCATIONS_DATA:
+      return { ...state, locationsData: action.payload };
+    case BAIT_DATA:
+      return { ...state, baitData: action.payload };
+    case FISH_DATA:
+      return { ...state, fishData: action.payload };
 
     case LOGOUT:
       localStorage.removeItem("token");

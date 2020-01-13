@@ -1,6 +1,10 @@
-import React from "react";
-import { Redirect } from 'react-router-dom';
+import React, { useEffect } from "react";
 // import ReactDOM from "react-dom";
+// import { Redirect } from 'react-router-dom';
+import {
+  useLastLocation
+  ,RedirectWithoutLastLocation
+} from 'react-router-last-location';
 import { connect } from "react-redux";
 import { withFormik, Form, Field } from "formik";
 // import * as Yup from "yup";
@@ -9,10 +13,33 @@ import {
   login
 } from "./actions";
 
-function LoginForm({ values, errors, touched, isSubmitting, loggedIn}) {
-  console.log(`LoginForm -> loggedIn`, loggedIn);
+function LoginForm({ values, errors, touched, isSubmitting, loggedIn }) {
+  //#region data
+  const lastLocation = useLastLocation();
+  //#endregion data
+
+  //#region useEffect monitor(s)
+  useEffect(() => {
+    console.log(`LoginForm -> loggedIn`, loggedIn);
+    console.log(`Referrer: ${document.referrer}`);
+    // eslint-disable-next-line
+  }, [])
+  //#endregion useEffect monitor(s)
+
+  //#region JSX
   if (loggedIn) {
-    return <Redirect to='/profile' />;
+    // if (props.history) {
+      return (
+        <>
+          <div>
+            lastLocation: {lastLocation}
+          </div>
+          <RedirectWithoutLastLocation to='/profile' />
+        </>
+      )
+    // } else {
+    //   props.history.goBack();
+    // }
   } else {
     return (
       <Form>
@@ -28,6 +55,7 @@ function LoginForm({ values, errors, touched, isSubmitting, loggedIn}) {
       </Form>
     );
   }
+  //#endregion JSX
 };
 
 const FormikLoginForm = withFormik({
