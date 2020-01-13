@@ -26,7 +26,7 @@ const Expedition = (props) => {
         </>
       ) : (
         <h4>
-          <NavLink to='/login'>Login</NavLink> to track your fishing trip locations &amp; catches!
+          <NavLink to='/signup'>Sign Up</NavLink> or <NavLink to='/login'>Login</NavLink> to track your fishing trip locations &amp; catches!
         </h4>
       )}
     </div>
@@ -37,7 +37,8 @@ const Expedition = (props) => {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.isLoading,
-    error: state.error,
+    isError: state.isError,
+    errors: state.errors,
     isLoggingIn: state.isLoggingIn,
     loggedIn: state.loggedIn,
     loginError: state.loginError,
@@ -49,8 +50,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     // login: (credentials) => dispatch(login(credentials))
     apiAction: (action, endpoint, body) => dispatch(apiAction(action, endpoint, body))
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps

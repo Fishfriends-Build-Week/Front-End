@@ -35,7 +35,8 @@ const Navigation = (props) => {
 const mapStateToProps = (state) => {
   return {
     isLoading: state.isLoading,
-    error: state.error,
+    isError: state.isError,
+    errors: state.errors,
     isLoggingIn: state.isLoggingIn,
     loggedIn: state.loggedIn,
     loginError: state.loginError,

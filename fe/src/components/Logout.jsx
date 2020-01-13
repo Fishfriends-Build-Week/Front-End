@@ -25,12 +25,13 @@ const Derp = (props) => {
   // <Redirect to="/" />
 
   return (null);
-}
+};
 
 const mapStateToProps = (state) => {
   return {
     isLoading: state.isLoading,
-    error: state.error,
+    isError: state.isError,
+    errors: state.errors,
     isLoggingIn: state.isLoggingIn,
     loggedIn: state.loggedIn,
     loginError: state.loginError,
@@ -41,8 +42,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => dispatch(logout())
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps

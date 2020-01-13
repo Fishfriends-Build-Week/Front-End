@@ -1,5 +1,6 @@
 import {
-  // APP_UPDATE,
+  RESET_ERROR_STATE,
+  SET_ERROR_STATE,
 
   REGISTER_START,
   REGISTER_SUCCESS,
@@ -41,13 +42,17 @@ import {
 
 export const initialState = {
   isLoading: false,
-  error: "",
+  isError: false,
+  errors: {},
 
   isRegistering: false,
-  registerError: '',
+  registered: false,
+  isRegisterError: false,
+  registerError: "",
 
   isLoggingIn: false,
   loggedIn: false,
+  isLoginError: false,
   loginError: "",
 
   // userAccount: [
@@ -87,10 +92,41 @@ export const reducer = (state = initialState, action) => {
   console.log(`reducer -> state`, state);
 
   switch (action.type) {
+    case RESET_ERROR_STATE:
+      return { ...state,
+        isSubmitting: false,
+        isLoading: false,
+        isError: false,
+        errors: {},
+        isLoggingIn: false,
+        isLoginError: false,
+        loginError: "",
+        isRegistering: false,
+        isRegisterError: false,
+        registerError: ""
+      };
+    case SET_ERROR_STATE:
+      return { ...state,
+        isSubmitting: action.payload.isSubmitting,
+        isLoading: action.payload.isLoading,
+        isError: action.payload.isError,
+        errors: { ...state.errors,
+          passwordError: action.payload.errors.passwordError
+        },
+        isLoggingIn: action.payload.isLoggingIn,
+        isLoginError: action.payload.isLoginError,
+        loginError: action.payload.loginError,
+        isRegistering: action.payload.isRegistering,
+        isRegisterError: action.payload.isRegisterError,
+        registerError: action.payload.registerError
+      };
+
     case REGISTER_START:
       return { ...state,
         isLoading: true,
         isRegistering: true,
+        registered: false,
+        isRegisterError: false,
         registerError: ""
       };
     case REGISTER_SUCCESS:
@@ -99,17 +135,23 @@ export const reducer = (state = initialState, action) => {
       return { ...state,
         isLoading: false,
         isRegistering: false,
-        loggedIn: true
+        registered: true
       };
     case REGISTER_FAIL:
       return { ...state,
         isLoading: false,
         isRegistering: false,
+        isRegisterError: true,
         registerError: action.payload
       };
 
     case LOGIN_START:
-      return { ...state, isLoading: true, isLoggingIn: true, loginError: "" };
+      return { ...state,
+        isLoading: true,
+        isLoggingIn: true,
+        isLoginError: false,
+        loginError: ""
+      };
     case LOGIN_SUCCESS:
       localStorage.setItem("token", action.payload.token);
 
@@ -136,6 +178,7 @@ export const reducer = (state = initialState, action) => {
       return { ...state,
         isLoading: false,
         isLoggingIn: false,
+        isLoginError: true,
         loginError: action.payload
       };
 
@@ -182,13 +225,18 @@ export const reducer = (state = initialState, action) => {
       };
 
     case API_ACTION_START:
-      return { ...state, isLoading: true, error: "" };
+      return { ...state,
+        isLoading: true,
+        isError: false,
+        errors: {}
+      };
     case API_ACTION_SUCCESS:
       return { ...state, isLoading: false };
     case API_ACTION_FAIL:
       return { ...state,
         isLoading: false,
-        error: action.payload
+        isError: true,
+        errors: action.payload
       };
 
     case LOGS_DATA:
@@ -209,5 +257,5 @@ export const reducer = (state = initialState, action) => {
 
     default:
       return state;
-  }
+  };
 };

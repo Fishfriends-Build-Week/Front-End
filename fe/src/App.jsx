@@ -8,6 +8,8 @@ import { LastLocationProvider } from 'react-router-last-location';
 import { connect } from 'react-redux';
 import { initialState, reducer } from './components/reducers';
 import {
+  resetErrorState,
+  setErrorState,
   // register,
   login,
   // getUsers,
@@ -47,14 +49,12 @@ const App = (props) => {
     if (!state.loggedIn) {
       const u = state.loginInfo.username;
       const p = state.loginInfo.password;
-      console.log(`App -> state: username='${u}'...`);
-      console.log(`App -> state: password='${p}'...`);
       if (u !== '' && p !== '') {
         console.log(`App -> state: Attempting to re-login as '${u}'...`);
-        const c = {u, p}
+        const c = {u, p};
         props.login(c);
-      }
-    }
+      };
+    };
     // eslint-disable-next-line
   }, [state]);
 
@@ -68,9 +68,9 @@ const App = (props) => {
         if (props.loginInfo.account_id === -1) {
           console.log(`App -> props: getUserById(${i})...`);
           props.getUserById(i);
-        }
-      }
-    }
+        };
+      };
+    };
   }, [props]);
   //#endregion useEffect monitor(s)
 
@@ -107,7 +107,8 @@ const mapStateToProps = (state) => {
   console.log(`App: mapStateToProps -> state`, state);
   return {
     isLoading: state.isLoading,
-    error: state.error,
+    isError: state.isError,
+    errors: state.errors,
     isLoggingIn: state.isLoggingIn,
     loggedIn: state.loggedIn,
     loginError: state.loginError,
@@ -118,6 +119,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   console.log(`App: mapDispatchToProps -> dispatch`, dispatch);
   return {
+    resetErrorState: () => dispatch(resetErrorState()),
+    setErrorState: (errorObject) => dispatch(setErrorState(errorObject)),
     // register: register,
     // // login: login,
     login: (credentials) => dispatch(login(credentials)),
@@ -131,8 +134,8 @@ const mapDispatchToProps = (dispatch) => {
     // // logout: logout
     // apiAction: (action, endpoint, body) => dispatch(apiAction(action, endpoint, body)),
     logout: () => dispatch(logout())
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps
